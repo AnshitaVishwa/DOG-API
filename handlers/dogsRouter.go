@@ -17,11 +17,13 @@ func DogsRouter(w http.ResponseWriter, r *http.Request) {
 	if path == "/dogs" {
 		switch r.Method {
 		case http.MethodGet:
-			GetAllDogs(w, r)
+			getAllDogs(w, r)
 			return
 		case http.MethodPost:
+			dogsPostOne(w, r)
 			return
 		default:
+			postError(w, http.StatusMethodNotAllowed)
 			return
 		}
 	}

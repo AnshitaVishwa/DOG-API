@@ -23,7 +23,7 @@ type Dog struct {
 
 	// First Letter is Capital as it has to be exported
 
-	ID    bson.ObjectId `json: "id" storm: "id"` // Fields appear in json will be like these
+	ID    bson.ObjectId `json:"id" storm:"id"` // Fields appear in json will be like these
 	Name  string        `json:"name"`
 	Breed string        `json:"breed"`
 }
@@ -31,6 +31,7 @@ type Dog struct {
 // connect the server with the database
 // these are global variables hence they are to be initialized as follows
 
+// this will create dogs.db file if not present or if present access the data from there
 const (
 	dbPath = "dogs.db"
 )
@@ -55,4 +56,27 @@ func All() ([]Dog, error) {
 		return nil, err
 	}
 	return dogs, nil
+}
+
+// validate makes sure that the record contains v
+
+func (d *Dog) validate() error {
+	if d.Name == "" {
+		return ErrRecordInvalid
+	}
+	return nil
+}
+
+// save updates or creates a given record in the database
+
+func (d *Dog) Save() error {
+	if err := d.validate(); err != nil {
+		return err
+	}
+	db, err := storm.Open(dbPath)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	return db.Save(d)
 }
