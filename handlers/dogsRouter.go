@@ -9,13 +9,15 @@ import (
 
 func DogsRouter(w http.ResponseWriter, r *http.Request) {
 
-	path := strings.TrimSuffix(path, "/")
+	path := r.URL.Path
+	path = strings.TrimSuffix(path, "/")
 
 	// Checking the type of request (Either GET/POST)
 
 	if path == "/dogs" {
 		switch r.Method {
 		case http.MethodGet:
+			GetAllDogs(w, r)
 			return
 		case http.MethodPost:
 			return

@@ -7,10 +7,15 @@ import (
 
 type jsonResponse map[string]interface{}
 
+func postError(w http.ResponseWriter, code int) {
+	http.Error(w, http.StatusText(code), code)
+}
+
 func postBodyResponse(w http.ResponseWriter, code int, content jsonResponse) {
 	if content != nil {
 		js, err := json.Marshal(content)
 		if err != nil {
+			postError(w, http.StatusMethodNotAllowed)
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
