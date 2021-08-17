@@ -9,6 +9,10 @@ import (
 
 func main() {
 
+	// To retrieve all the dogs present in the database
+	http.HandleFunc("/dogs", handlers.DogsRouter)
+	http.HandleFunc("/dogs/", handlers.DogsRouter)
+
 	// making a handler which can serve the root
 	http.HandleFunc("/", handlers.RootHandler)
 
