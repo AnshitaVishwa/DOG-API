@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"path"
 	"strings"
 )
 
@@ -24,5 +23,5 @@ func DogsRouter(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	
+
 }
