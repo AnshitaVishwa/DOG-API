@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"../dog"
+	"github.com/asdine/storm"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -56,4 +57,17 @@ func dogsPostOne(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Location", "/dogs/"+d.ID.Hex())
 	w.WriteHeader(http.StatusCreated)
+}
+
+func dogsGetOne(w http.ResponseWriter, _ *http.Request, id bson.ObjectId) {
+	d, err := dog.One(id)
+	if err != nil {
+		if err == storm.ErrNotFound {
+			postError(w, http.StatusNotFound)
+			return
+		}
+		postError(w, http.StatusInternalServerError)
+		return
+	}
+	postBodyResponse(w, http.StatusOK, jsonResponse{"dogs": d})
 }

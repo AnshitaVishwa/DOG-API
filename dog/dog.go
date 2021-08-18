@@ -58,6 +58,20 @@ func All() ([]Dog, error) {
 	return dogs, nil
 }
 
+func One(id bson.ObjectId) (*Dog, error) {
+	db, err := storm.Open(dbPath)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	d := new(Dog)
+	err = db.One("ID", id, d)
+	if err != nil {
+		return nil, err
+	}
+	return d, nil
+}
+
 // validate makes sure that the record contains v
 
 func (d *Dog) validate() error {
