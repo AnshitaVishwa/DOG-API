@@ -3,6 +3,8 @@ package handlers
 import (
 	"net/http"
 	"strings"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 // It will handle different type of Requests of dogs
@@ -26,6 +28,34 @@ func DogsRouter(w http.ResponseWriter, r *http.Request) {
 			postError(w, http.StatusMethodNotAllowed)
 			return
 		}
+	}
+
+	// Adding CRUD functionalities to Route
+
+	path = strings.TrimPrefix(path, "/dogs/")
+	if !bson.IsObjectIdHex(path) {
+		postError(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	id := bson.ObjectIdHex(path)
+
+	switch r.Method {
+	case http.MethodGet:
+		usersGetOne(w, r, id)
+		return
+	case http.MethodPut:
+		// usersPutOne(w, r, id)
+		return
+	case http.MethodPatch:
+		// usersPatchOne(w, r, id)
+		return
+	case http.MethodDelete:
+		// usersDeleteOne(w, r, id)
+		return
+	default:
+		postError(w, http.StatusMethodNotAllowed)
+		return
 	}
 
 }
