@@ -94,3 +94,18 @@ func (d *Dog) Save() error {
 	defer db.Close()
 	return db.Save(d)
 }
+
+// Delete removes a given record from the database
+func Delete(id bson.ObjectId) error {
+	db, err := storm.Open(dbPath)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	d := new(Dog)
+	err = db.One("ID", id, d)
+	if err != nil {
+		return err
+	}
+	return db.DeleteStruct(d)
+}

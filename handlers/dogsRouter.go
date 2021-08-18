@@ -51,7 +51,7 @@ func DogsRouter(w http.ResponseWriter, r *http.Request) {
 		dogsPatchOne(w, r, id)
 		return
 	case http.MethodDelete:
-		// usersDeleteOne(w, r, id)
+		dogsDeleteOne(w, r, id)
 		return
 	default:
 		postError(w, http.StatusMethodNotAllowed)
