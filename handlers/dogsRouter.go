@@ -48,7 +48,7 @@ func DogsRouter(w http.ResponseWriter, r *http.Request) {
 		dogsPutOne(w, r, id)
 		return
 	case http.MethodPatch:
-		// usersPatchOne(w, r, id)
+		dogsPatchOne(w, r, id)
 		return
 	case http.MethodDelete:
 		// usersDeleteOne(w, r, id)

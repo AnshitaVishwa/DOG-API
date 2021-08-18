@@ -91,3 +91,31 @@ func dogsPutOne(w http.ResponseWriter, r *http.Request, id bson.ObjectId) {
 	}
 	postBodyResponse(w, http.StatusOK, jsonResponse{"users": d})
 }
+
+func dogsPatchOne(w http.ResponseWriter, r *http.Request, id bson.ObjectId) {
+	d, err := dog.One(id)
+	if err != nil {
+		if err == storm.ErrNotFound {
+			postError(w, http.StatusNotFound)
+			return
+		}
+		postError(w, http.StatusInternalServerError)
+		return
+	}
+	err = bodyToDog(r, d)
+	if err != nil {
+		postError(w, http.StatusBadRequest)
+		return
+	}
+	d.ID = id
+	err = d.Save()
+	if err != nil {
+		if err == dog.ErrRecordInvalid {
+			postError(w, http.StatusBadRequest)
+		} else {
+			postError(w, http.StatusInternalServerError)
+		}
+		return
+	}
+	postBodyResponse(w, http.StatusOK, jsonResponse{"users": d})
+}
