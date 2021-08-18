@@ -71,3 +71,23 @@ func dogsGetOne(w http.ResponseWriter, _ *http.Request, id bson.ObjectId) {
 	}
 	postBodyResponse(w, http.StatusOK, jsonResponse{"dogs": d})
 }
+
+func dogsPutOne(w http.ResponseWriter, r *http.Request, id bson.ObjectId) {
+	d := new(dog.Dog)
+	err := bodyToDog(r, d)
+	if err != nil {
+		postError(w, http.StatusBadRequest)
+		return
+	}
+	d.ID = id
+	err = d.Save()
+	if err != nil {
+		if err == dog.ErrRecordInvalid {
+			postError(w, http.StatusBadRequest)
+		} else {
+			postError(w, http.StatusInternalServerError)
+		}
+		return
+	}
+	postBodyResponse(w, http.StatusOK, jsonResponse{"users": d})
+}
