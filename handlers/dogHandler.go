@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"../dog"
+	"github.com/AnshitaVishwa/DOG-API/dog"
 	"github.com/asdine/storm"
 	"gopkg.in/mgo.v2/bson"
 )

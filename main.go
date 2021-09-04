@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"./handlers"
 	"net/http"
 	"os"
+
+	"github.com/AnshitaVishwa/DOG-API/handlers"
 )
 
 func main() {
@@ -17,7 +18,8 @@ func main() {
 	http.HandleFunc("/", handlers.RootHandler)
 
 	// Checking whether the port 8080 is working or not
-	err := http.ListenAndServe("localhost:8080", nil)
+	// addr := os.Getenv("ADDR")
+	err := http.ListenAndServe("localhost:4321", nil)
 
 	if err != nil {
 		fmt.Println(err)
